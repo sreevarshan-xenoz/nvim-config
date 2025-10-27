@@ -419,6 +419,34 @@ EOF
     fi
 }
 
+# 🌙 Setup LunarVim-inspired features
+setup_lunarvim_features() {
+    log_info "Setting up LunarVim-inspired features..."
+    
+    # Create LunarVim directories
+    mkdir -p "$HOME/.config/nvim/lua/lvim/modules"
+    
+    # Test LunarVim module loading
+    if timeout 15 nvim --headless -c "lua require('lvim')" +qa 2>/dev/null; then
+        log_success "LunarVim modules loaded successfully"
+    else
+        log_warning "LunarVim modules may have loading issues"
+    fi
+    
+    # Create LunarVim helper script
+    cat > "$HOME/.local/bin/lvim-status" << 'EOF'
+#!/bin/bash
+# LunarVim status checker
+echo "🌙 LunarVim Status Check"
+echo "======================="
+nvim --headless "+LvimModules" +qa 2>/dev/null || echo "❌ LunarVim modules not loaded"
+nvim --headless -c "lua require('lvim.ai').check_ai_status()" +qa 2>/dev/null || echo "❌ AI status check failed"
+echo "✅ Status check complete"
+EOF
+    chmod +x "$HOME/.local/bin/lvim-status"
+    log_success "LunarVim status script created: ~/.local/bin/lvim-status"
+}
+
 # 🚀 Install/Update Neovim
 install_neovim() {
     log_info "Checking Neovim installation..."
@@ -637,6 +665,7 @@ main() {
     install_node_packages
     install_additional_tools
     setup_bytebot
+    setup_lunarvim_features
     
     # Setup Neovim configuration
     setup_neovim_config

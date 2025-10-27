@@ -17,6 +17,7 @@ help:
 	@echo "  make test       - Run all tests"
 	@echo "  make beast      - Full beast mode optimization"
 	@echo "  make bytebot    - Test ByteBot integration"
+	@echo "  make lunar      - LunarVim mode setup and health check"
 	@echo "  make help       - Show this help"
 
 # Install Elite Neovim
@@ -142,3 +143,22 @@ benchmark:
 	@echo "Plugin count:"
 	@nvim --headless -c "lua print('Plugins: ' .. #require('lazy').plugins())" +qa
 	@echo "✅ Benchmark complete"
+
+# LunarVim mode setup and health check
+lunar:
+	@echo "🌙 Setting up LunarVim mode..."
+	@echo "📦 Syncing plugins..."
+	@nvim --headless "+Lazy sync" +qa
+	@echo "🏥 Running LunarVim health check..."
+	@nvim --headless "+LvimHealth" +qa
+	@echo "📊 Testing LunarVim modules..."
+	@nvim --headless "+LvimModules" +qa
+	@echo "⚡ Testing startup time (target: <100ms)..."
+	@time nvim --headless +qa
+	@echo "✅ LunarVim mode ready!"
+
+# LunarVim AI status check
+lunar-ai:
+	@echo "🤖 Checking LunarVim AI integrations..."
+	@nvim --headless -c "lua require('lvim.ai').check_ai_status()" +qa
+	@echo "✅ AI status check complete"

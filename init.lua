@@ -67,14 +67,16 @@ vim.opt.rtp:prepend(lazypath)
 require('configs.options')  -- All settings optimized for 0.11+
 require('configs.keymaps')  -- Leader-based mappings with which-key
 
--- 🔌 Beast Mode Plugin Architecture - hyper-optimized lazy loading
-local plugins = {}
-local plugin_modules = {
-  'plugins.core',        -- Essential foundation + snapshot.nvim
-  'plugins.ui',          -- Themes, alpha dashboard, smooth animations
-  'plugins.navigation',  -- Flash, Telescope, Oil, Harpoon
+-- 🌙 LunarVim-inspired Modular Architecture - <100ms startup
+local lvim = require("lvim")
+
+-- Load LunarVim-style modular plugins
+local plugins = lvim.setup()
+
+-- Merge with existing beast mode plugins for compatibility
+local beast_modules = {
+  'plugins.navigation',  -- Flash, Telescope, Oil, Harpoon (enhanced)
   'plugins.editing',     -- Comment, surround, mini.ai, dial, undotree
-  'plugins.lsp',         -- Mason, lspconfig, cmp, trouble
   'plugins.ai',          -- Copilot, ChatGPT, ByteBot integration
   'plugins.debug',       -- nvim-dap, neotest, testing suite
   'plugins.project',     -- project.nvim, persistence, workspaces
@@ -87,24 +89,15 @@ local plugin_modules = {
   'plugins.data',        -- schemastore, yaml-companion
   'plugins.tex',         -- vimtex for LaTeX
   'plugins.utils',       -- specter, bqf, todo-comments, nerd fonts
-  'plugins.enhanced-ui',  -- Beautiful UI enhancements
-  'plugins.motions',      -- Enhanced navigation
-  'plugins.project',      -- Project & session management
-  'plugins.languages',    -- Language-specific tools
-  -- 🚀 STREAMLINED UPGRADES (heavy plugins disabled)
-  'plugins.advanced-ai',     -- Minimal AI tools
-  'plugins.futuristic-ui',   -- UI enhancements (minimap disabled)
-  'plugins.advanced-dev',    -- Essential dev tools only
-  'plugins.collaborative',   -- REST client only
-  'plugins.performance',     -- Basic performance monitoring
 }
 
-for _, module in ipairs(plugin_modules) do
+-- Load beast mode plugins (for compatibility and additional features)
+for _, module in ipairs(beast_modules) do
   local ok, plugin_list = pcall(require, module)
   if ok then
     plugins = vim.list_extend(plugins, plugin_list)
   else
-    print("Failed to load " .. module .. ": " .. plugin_list)
+    vim.notify("Failed to load beast module: " .. module, vim.log.levels.WARN)
   end
 end
 
@@ -265,6 +258,12 @@ if os.getenv("HYPRLAND_INSTANCE_SIGNATURE") then
     end,
   })
 end
+
+-- 🌙 Setup LunarVim-style commands and keymaps
+vim.defer_fn(function()
+  lvim.setup_commands()
+  lvim.setup_which_key()
+end, 200)
 
 -- 📊 Beast mode startup profiling
 if vim.env.NVIM_PROFILE then

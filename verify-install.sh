@@ -280,6 +280,57 @@ test_beast_mode_features() {
     fi
 }
 
+# Test LunarVim-specific features
+test_lunarvim_features() {
+    log_info "Testing LunarVim-inspired features..."
+    
+    # Test LunarVim module loading
+    if timeout 10 nvim --headless -c "lua require('lvim')" +qa 2>/dev/null; then
+        log_success "LunarVim modules load successfully"
+    else
+        log_error "LunarVim modules failed to load"
+    fi
+    
+    # Test LunarVim commands
+    if timeout 10 nvim --headless "+LvimModules" +qa 2>/dev/null; then
+        log_success "LunarVim commands available"
+    else
+        log_warning "LunarVim commands may not be working"
+    fi
+    
+    # Test LunarVim keymaps
+    if timeout 10 nvim --headless "+LvimKeymaps" +qa 2>/dev/null; then
+        log_success "LunarVim keymaps guide available"
+    else
+        log_warning "LunarVim keymaps guide may not be working"
+    fi
+    
+    # Test AI integration
+    if timeout 10 nvim --headless -c "lua require('lvim.ai').check_ai_status()" +qa 2>/dev/null; then
+        log_success "LunarVim AI integration functional"
+    else
+        log_warning "LunarVim AI integration may have issues"
+    fi
+    
+    # Test startup time for <100ms target
+    local startup_log="/tmp/lvim-startup-test.log"
+    if nvim --startuptime "$startup_log" --headless +qa 2>/dev/null; then
+        local startup_time=$(tail -n1 "$startup_log" | awk '{print $1}')
+        
+        if (( $(echo "$startup_time < 100" | bc -l 2>/dev/null || echo "0") )); then
+            log_success "LunarVim startup time: ${startup_time}ms (Target: <100ms achieved!)"
+        elif (( $(echo "$startup_time < 150" | bc -l 2>/dev/null || echo "0") )); then
+            log_warning "LunarVim startup time: ${startup_time}ms (Good, but target is <100ms)"
+        else
+            log_error "LunarVim startup time: ${startup_time}ms (Too slow, target: <100ms)"
+        fi
+        
+        rm -f "$startup_log"
+    else
+        log_error "Could not measure LunarVim startup time"
+    fi
+}
+
 # Main verification function
 main() {
     log_header "Elite Neovim Installation Verification"
@@ -316,6 +367,9 @@ main() {
     echo ""
     
     test_beast_mode_features
+    echo ""
+    
+    test_lunarvim_features
     echo ""
     
     # Summary
