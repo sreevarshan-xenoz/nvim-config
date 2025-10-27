@@ -26,8 +26,8 @@ if [ -d "$HOME/.config/nvim-elite" ]; then
     git pull
 else
     echo -e "${BLUE}📥 Cloning Elite Neovim configuration...${NC}"
-    git clone https://github.com/your-username/elite-neovim-config.git "$HOME/.config/nvim-elite"
-    cd "$HOME/.config/nvim-elite"
+    git clone https://github.com/sreevarshan-xenoz/nvim-config.git "$HOME/.config/nvim"
+    cd "$HOME/.config/nvim"
 fi
 
 # Make install script executable
