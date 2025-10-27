@@ -103,6 +103,91 @@
 - **Data**: `yaml-companion.nvim`, `csv.vim`
 - **LaTeX**: `vimtex`
 
+## 💻 VS Code UI Mode
+
+Transform your Neovim into a VS Code-like experience while maintaining beast mode performance:
+
+### 🌟 Key Features
+- **🌳 Neo-tree Explorer**: VS Code-like sidebar file browser with Git integration
+- **⚠️ Trouble Problems Panel**: Diagnostics panel that mimics VS Code's Problems view
+- **🎯 Legendary Command Palette**: Quick command access just like VS Code's `Ctrl+Shift+P`
+- **🍞 Barbecue Breadcrumbs**: Navigation breadcrumbs showing your current location
+- **📊 Enhanced Lualine**: Tabbed interface with buffer management and status info
+- **✨ Smooth Animations**: Fluid cursor movement and scrolling animations
+- **🎨 Transparency Support**: Configurable transparency for modern aesthetics
+- **🖥️ Neovide Integration**: GPU-accelerated GUI with VS Code-like rendering
+
+### 🎮 VS Code-like Keybindings
+
+| Action | Keybinding | Description |
+|--------|------------|-------------|
+| **File Explorer** | `<leader>e` | Toggle Neo-tree sidebar (like VS Code's Explorer) |
+| **Command Palette** | `<C-p>` | Open Legendary command palette |
+| **Quick Open** | `<C-o>` | Quick file finder (like VS Code's Ctrl+P) |
+| **Find in Files** | `<C-f>` | Search across all files |
+| **Problems Panel** | `<leader>xx` | Toggle Trouble diagnostics panel |
+| **Breadcrumbs** | `<leader>o` | Toggle navigation breadcrumbs |
+| **New File** | `<C-n>` | Create new file |
+| **Save File** | `<C-s>` | Save current file |
+| **Save All** | `<C-Shift-s>` | Save all modified files |
+| **Close File** | `<C-w>` | Close current buffer |
+
+### 🧪 VS Code UI Mode Tests
+
+Try these commands to experience the VS Code-like interface:
+
+```bash
+# Test the file explorer
+nvim
+<leader>e          # Opens Neo-tree sidebar (mimics VS Code Explorer)
+# Navigate with j/k, open files with <Enter>, create files with 'a'
+
+# Test command palette
+<C-p>              # Opens Legendary command palette
+# Type "file" to see file operations, "git" for Git commands
+
+# Test problems panel
+<leader>xx         # Opens Trouble diagnostics panel
+# Shows errors, warnings, and info like VS Code's Problems panel
+
+# Test breadcrumbs
+<leader>o          # Toggle breadcrumbs showing current file location
+# Shows file path and symbol navigation
+
+# Test smooth navigation
+<C-d>              # Smooth scroll down with animations
+<C-u>              # Smooth scroll up with animations
+```
+
+### 🎨 Transparency Configuration
+
+Customize the VS Code-like transparency in `lua/configs/options.lua`:
+
+```lua
+-- VS Code-like transparency settings
+opt.pumblend = 10    -- Popup menu transparency (0-100)
+opt.winblend = 0     -- Window transparency (0=solid, 10=slight transparency)
+```
+
+### 🖥️ Neovide Enhanced Experience
+
+For the ultimate VS Code-like experience, use Neovide (GPU-accelerated GUI):
+
+```bash
+# Install Neovide (included in beast mode installation)
+neovide
+
+# Or launch with specific settings
+neovide --geometry=1920x1080 --maximized
+```
+
+**Neovide Features:**
+- GPU-accelerated rendering for smooth animations
+- Native OS integration (drag & drop, system clipboard)
+- Smooth cursor animations and transitions
+- High DPI support for crisp text rendering
+- Ligature support for programming fonts
+
 ## 🚀 Installation
 
 ### 🎯 One-Line Installation (Recommended)

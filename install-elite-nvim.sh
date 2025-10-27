@@ -136,6 +136,22 @@ install_dependencies() {
                 git nodejs npm ripgrep fd gcc make python python-pip \
                 clang rustup go unzip curl wget tree-sitter luarocks \
                 base-devel cmake pkg-config
+            
+            # Install Neovide (GPU-accelerated Neovim GUI) for VS Code-like experience
+            if ! command -v neovide &> /dev/null; then
+                log_info "Installing Neovide for enhanced VS Code-like UI..."
+                sudo pacman -S --needed --noconfirm neovide || {
+                    log_warning "Neovide not available in repos, trying AUR..."
+                    if command -v yay &> /dev/null; then
+                        yay -S --noconfirm neovide
+                    elif command -v paru &> /dev/null; then
+                        paru -S --noconfirm neovide
+                    else
+                        log_warning "No AUR helper found. Install Neovide manually if desired."
+                        log_info "Manual install: yay -S neovide or paru -S neovide"
+                    fi
+                }
+            fi
             ;;
         "debian")
             log_info "Using apt package manager..."

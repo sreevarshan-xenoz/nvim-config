@@ -11,11 +11,21 @@ opt.wrap = false                    -- Don't wrap long lines
 opt.scrolloff = 8                   -- Keep 8 lines visible when scrolling
 opt.sidescrolloff = 8               -- Keep 8 columns visible when scrolling
 
--- 🎨 Colors & UI
+-- 🎨 Colors & UI - VS Code-like appearance
 opt.termguicolors = true            -- Enable 24-bit RGB colors
 opt.background = "dark"             -- Dark background
 opt.cursorline = true               -- Highlight current line
 opt.colorcolumn = "80"              -- Show column at 80 chars
+
+-- VS Code-like transparency and blending (0.11.4+ features)
+if vim.fn.has("nvim-0.11") == 1 then
+  opt.pumblend = 10                 -- Popup menu transparency (0-100)
+  opt.winblend = 0                  -- Window transparency (0 for solid, 10 for slight transparency)
+else
+  -- Fallback for older versions
+  opt.pumblend = 0
+  opt.winblend = 0
+end
 
 -- 🔍 Search & Replace
 opt.hlsearch = false                -- Don't highlight all search matches

@@ -64,8 +64,9 @@ keymap("n", "<leader>ch", ":checkhealth<CR>", { desc = "Health check" })
 -- 🔌 PLUGIN-SPECIFIC KEYMAPS (loaded when plugins are available)
 -- ===============================================
 
--- 🔍 TELESCOPE (Find everything)
+-- 🔍 TELESCOPE & VS CODE-LIKE NAVIGATION
 local telescope_keys = {
+  -- Standard telescope
   ["<leader>ff"] = { ":Telescope find_files<CR>", "Find files" },
   ["<leader>fg"] = { ":Telescope live_grep<CR>", "Live grep" },
   ["<leader>fb"] = { ":Telescope buffers<CR>", "Find buffers" },
@@ -74,6 +75,19 @@ local telescope_keys = {
   ["<leader>fc"] = { ":Telescope commands<CR>", "Commands" },
   ["<leader>fk"] = { ":Telescope keymaps<CR>", "Keymaps" },
   ["<leader>fs"] = { ":Telescope grep_string<CR>", "Grep string under cursor" },
+  
+  -- VS Code-like shortcuts
+  ["<C-p>"] = { ":Legendary<CR>", "Command palette" },
+  ["<C-o>"] = { ":Telescope find_files<CR>", "Open file" },
+  ["<C-f>"] = { ":Telescope live_grep<CR>", "Find in files" },
+  ["<C-h>"] = { ":Telescope oldfiles<CR>", "Recent files" },
+}
+
+-- 🌳 NEO-TREE & EXPLORER
+local explorer_keys = {
+  ["<leader>e"] = { ":Neotree toggle<CR>", "Toggle file explorer" },
+  ["<leader>E"] = { ":Neotree reveal<CR>", "Reveal in explorer" },
+  ["<leader>o"] = { ":lua require('barbecue.ui').toggle()<CR>", "Toggle breadcrumbs" },
 }
 
 -- 🤖 AI CODING
@@ -133,19 +147,27 @@ local lsp_keys = {
   ["<C-k>"] = { ":lua vim.lsp.buf.signature_help()<CR>", "Signature help" },
 }
 
--- 🔧 UTILITY
+-- 🔧 UTILITY & VS CODE-LIKE PANELS
 local util_keys = {
-  ["<leader>xx"] = { ":Trouble<CR>", "Toggle Trouble" },
+  -- Trouble (Problems panel)
+  ["<leader>xx"] = { ":Trouble diagnostics toggle<CR>", "Toggle problems panel" },
   ["<leader>xw"] = { ":Trouble workspace_diagnostics<CR>", "Workspace diagnostics" },
   ["<leader>xd"] = { ":Trouble document_diagnostics<CR>", "Document diagnostics" },
   ["<leader>xl"] = { ":Trouble loclist<CR>", "Location list" },
   ["<leader>xq"] = { ":Trouble quickfix<CR>", "Quickfix list" },
+  
+  -- VS Code-like file operations
+  ["<C-n>"] = { ":enew<CR>", "New file" },
+  ["<C-s>"] = { ":w<CR>", "Save file" },
+  ["<C-S-s>"] = { ":wa<CR>", "Save all files" },
+  ["<C-w>"] = { ":bd<CR>", "Close file" },
 }
 
 -- 🎯 Register all plugin keymaps
 local function register_plugin_keys()
   local all_keys = {
     telescope_keys,
+    explorer_keys,
     ai_keys,
     debug_keys,
     test_keys,
