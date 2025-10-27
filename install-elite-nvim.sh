@@ -364,6 +364,45 @@ install_additional_tools() {
     log_success "Additional tools installed successfully"
 }
 
+# 🤖 Setup ByteBot integration (optional)
+setup_bytebot() {
+    log_info "Setting up ByteBot integration..."
+    
+    read -p "Do you want to set up ByteBot integration? (y/N): " -n 1 -r
+    echo ""
+    
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        log_info "ByteBot will be available on localhost:9991"
+        log_info "You can run your own ByteBot container or service"
+        log_info "Example Docker command:"
+        echo "  docker run -d -p 9991:8080 your-bytebot-image"
+        echo ""
+        
+        # Test ByteBot connection
+        if curl -s --connect-timeout 5 http://localhost:9991/health &>/dev/null; then
+            log_success "ByteBot service detected and ready!"
+        else
+            log_warning "ByteBot service not running. Start it manually when needed."
+        fi
+        
+        # Create ByteBot helper script
+        cat > "$HOME/.local/bin/bytebot-test" << 'EOF'
+#!/bin/bash
+# Test ByteBot connection
+echo "Testing ByteBot connection..."
+if curl -s --connect-timeout 5 http://localhost:9991/health; then
+    echo "✅ ByteBot is ready!"
+else
+    echo "❌ ByteBot not available. Start your ByteBot service first."
+fi
+EOF
+        chmod +x "$HOME/.local/bin/bytebot-test"
+        log_success "ByteBot test script created: ~/.local/bin/bytebot-test"
+    else
+        log_info "ByteBot integration skipped. You can enable it later."
+    fi
+}
+
 # 🚀 Install/Update Neovim
 install_neovim() {
     log_info "Checking Neovim installation..."
@@ -581,6 +620,7 @@ main() {
     setup_rust
     install_node_packages
     install_additional_tools
+    setup_bytebot
     
     # Setup Neovim configuration
     setup_neovim_config

@@ -96,6 +96,50 @@ check_shell() {
     echo -e "${BLUE}🐚 Shell:${NC} $shell_name"
 }
 
+check_gpu() {
+    echo -e "${BLUE}🎮 GPU Information:${NC}"
+    if command -v nvidia-smi &> /dev/null; then
+        local gpu_info=$(nvidia-smi --query-gpu=name --format=csv,noheader,nounits | head -n1)
+        echo -e "${GREEN}  NVIDIA GPU:${NC} $gpu_info"
+    elif command -v lspci &> /dev/null && lspci | grep -i vga | grep -i amd &> /dev/null; then
+        echo -e "${GREEN}  AMD GPU detected${NC}"
+    elif command -v lspci &> /dev/null && lspci | grep -i vga | grep -i intel &> /dev/null; then
+        echo -e "${YELLOW}  Intel integrated graphics${NC}"
+    else
+        echo -e "${YELLOW}  GPU information not available${NC}"
+    fi
+}
+
+check_hyprland() {
+    if [ -n "$HYPRLAND_INSTANCE_SIGNATURE" ]; then
+        echo -e "${GREEN}✅ Hyprland${NC} - Theme sync available"
+        ((PASSED++))
+    else
+        echo -e "${BLUE}ℹ️  Hyprland${NC} - Not detected (theme sync disabled)"
+    fi
+}
+
+check_neovide() {
+    if command -v neovide &> /dev/null; then
+        local version=$(neovide --version 2>/dev/null | head -n1 || echo "installed")
+        echo -e "${GREEN}✅ Neovide${NC} - $version (GPU acceleration available)"
+        ((PASSED++))
+    else
+        echo -e "${BLUE}ℹ️  Neovide${NC} - Not installed (optional GUI)"
+    fi
+}
+
+check_bytebot() {
+    echo -e "${BLUE}🤖 ByteBot Integration:${NC}"
+    if curl -s --connect-timeout 2 http://localhost:9991/health &>/dev/null; then
+        echo -e "${GREEN}✅ ByteBot service${NC} - Running on localhost:9991"
+        ((PASSED++))
+    else
+        echo -e "${YELLOW}⚠️  ByteBot service${NC} - Not running (optional AI integration)"
+        ((WARNINGS++))
+    fi
+}
+
 echo -e "${PURPLE}🔍 Elite Neovim System Requirements Check${NC}"
 echo -e "${PURPLE}$(printf '=%.0s' {1..45})${NC}"
 echo ""
@@ -103,6 +147,14 @@ echo ""
 # System info
 check_os
 check_shell
+check_gpu
+echo ""
+
+# Beast mode features
+echo -e "${BLUE}🚀 Beast Mode Features:${NC}"
+check_hyprland
+check_neovide
+check_bytebot
 echo ""
 
 echo -e "${BLUE}📋 Checking System Requirements...${NC}"

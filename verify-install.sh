@@ -224,6 +224,62 @@ test_health_check() {
     fi
 }
 
+# Test beast mode specific features
+test_beast_mode_features() {
+    log_info "Testing beast mode features..."
+    
+    # Test Alpha dashboard
+    if timeout 10 nvim --headless -c "lua require('alpha')" +qa 2>/dev/null; then
+        log_success "Alpha dashboard available"
+    else
+        log_warning "Alpha dashboard may not be configured"
+    fi
+    
+    # Test ByteBot integration
+    if curl -s --connect-timeout 2 http://localhost:9991/health &>/dev/null; then
+        log_success "ByteBot service responding"
+        
+        # Test ByteBot API
+        local test_data='{"prompt":"test","content":"print(\"hello\")"}'
+        if curl -s --connect-timeout 5 -X POST -H "Content-Type: application/json" \
+           -d "$test_data" http://localhost:9991/analyze &>/dev/null; then
+            log_success "ByteBot API functional"
+        else
+            log_warning "ByteBot API may not be fully functional"
+        fi
+    else
+        log_warning "ByteBot service not running (optional feature)"
+    fi
+    
+    # Test session management
+    if timeout 10 nvim --headless -c "lua require('auto-session')" +qa 2>/dev/null; then
+        log_success "Session management available"
+    else
+        log_warning "Session management may not be configured"
+    fi
+    
+    # Test smooth cursor
+    if timeout 10 nvim --headless -c "lua require('smoothcursor')" +qa 2>/dev/null; then
+        log_success "Smooth cursor animations available"
+    else
+        log_warning "Smooth cursor may not be configured"
+    fi
+    
+    # Test undotree
+    if timeout 10 nvim --headless -c "UndotreeToggle" +qa 2>/dev/null; then
+        log_success "Undo tree visualization available"
+    else
+        log_warning "Undo tree may not be configured"
+    fi
+    
+    # Test Hyprland integration
+    if [ -n "$HYPRLAND_INSTANCE_SIGNATURE" ]; then
+        log_success "Hyprland theme sync enabled"
+    else
+        log_info "Hyprland not detected (theme sync disabled)"
+    fi
+}
+
 # Main verification function
 main() {
     log_header "Elite Neovim Installation Verification"
@@ -259,8 +315,11 @@ main() {
     test_health_check
     echo ""
     
+    test_beast_mode_features
+    echo ""
+    
     # Summary
-    log_header "Verification Summary"
+    log_header "Beast Mode Verification Summary"
     echo ""
     
     log_success "Passed: $PASSED"

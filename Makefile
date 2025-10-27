@@ -15,6 +15,8 @@ help:
 	@echo "  make clean      - Clean temporary files"
 	@echo "  make uninstall  - Remove configuration"
 	@echo "  make test       - Run all tests"
+	@echo "  make beast      - Full beast mode optimization"
+	@echo "  make bytebot    - Test ByteBot integration"
 	@echo "  make help       - Show this help"
 
 # Install Elite Neovim
@@ -101,3 +103,42 @@ dev-test:
 	@echo "🧪 Running development tests..."
 	@nvim --headless -c "lua print('Dev config test')" +qa
 	@echo "✅ Development tests passed"
+
+# Beast mode optimization
+beast:
+	@echo "🚀 Activating Beast Mode optimization..."
+	@echo "📊 Profiling current setup..."
+	@nvim --headless -c "lua require('lazy').profile()" +qa
+	@echo "🧹 Cleaning cache..."
+	@rm -rf ~/.cache/nvim
+	@echo "🔄 Rebuilding optimized cache..."
+	@nvim --headless +qa
+	@echo "⚡ Testing startup time..."
+	@time nvim --headless +qa
+	@echo "✅ Beast mode optimization complete!"
+
+# ByteBot integration test
+bytebot:
+	@echo "🤖 Testing ByteBot integration..."
+	@if curl -s --connect-timeout 5 http://localhost:9991/health >/dev/null 2>&1; then \
+		echo "✅ ByteBot service is running"; \
+		echo "🧪 Testing API..."; \
+		curl -s -X POST -H "Content-Type: application/json" \
+			-d '{"prompt":"test","content":"print(\"hello\")"}' \
+			http://localhost:9991/analyze || echo "⚠️  API test failed"; \
+	else \
+		echo "❌ ByteBot service not running on localhost:9991"; \
+		echo "💡 Start your ByteBot service first"; \
+	fi
+
+# Performance benchmark
+benchmark:
+	@echo "📊 Running performance benchmark..."
+	@echo "Startup time (5 runs):"
+	@for i in 1 2 3 4 5; do \
+		echo -n "Run $$i: "; \
+		time nvim --headless +qa 2>&1 | grep real; \
+	done
+	@echo "Plugin count:"
+	@nvim --headless -c "lua print('Plugins: ' .. #require('lazy').plugins())" +qa
+	@echo "✅ Benchmark complete"
