@@ -1,7 +1,141 @@
--- 🎨 UI & Themes - Beautiful interface with 4 themes + enhancements
--- tokyonight (default), catppuccin, gruvbox, onedarkpro + lualine + notify
+-- 🎨 Beast Mode UI - Alpha dashboard, smooth animations, 4 themes
+-- Dashboard with stats, smooth cursor, transparency, nerd fonts
 
 return {
+  -- 🚀 Alpha Dashboard - Beast mode welcome screen
+  {
+    "goolord/alpha-nvim",
+    event = "VimEnter",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+      local alpha = require("alpha")
+      local dashboard = require("alpha.themes.dashboard")
+      
+      -- Custom header
+      dashboard.section.header.val = {
+        "⚡ ███████╗██╗     ██╗████████╗███████╗",
+        "⚡ ██╔════╝██║     ██║╚══██╔══╝██╔════╝",
+        "⚡ █████╗  ██║     ██║   ██║   █████╗  ",
+        "⚡ ██╔══╝  ██║     ██║   ██║   ██╔══╝  ",
+        "⚡ ███████╗███████╗██║   ██║   ███████╗",
+        "⚡ ╚══════╝╚══════╝╚═╝   ╚═╝   ╚══════╝",
+        "",
+        "    🚀 NEOVIM BEAST MODE 0.11.4+ 🚀    ",
+        "   Production-ready • <150ms startup   ",
+      }
+      
+      -- Custom buttons with beast mode actions
+      dashboard.section.buttons.val = {
+        dashboard.button("f", "🔍 Find file", ":Telescope find_files <CR>"),
+        dashboard.button("n", "📝 New file", ":ene <BAR> startinsert <CR>"),
+        dashboard.button("r", "📚 Recent files", ":Telescope oldfiles <CR>"),
+        dashboard.button("p", "📁 Find project", ":Telescope projects <CR>"),
+        dashboard.button("s", "💾 Restore session", ":SessionRestore <CR>"),
+        dashboard.button("b", "🤖 ByteBot task", ":lua _G.bytebot_send('Help me start a new project') <CR>"),
+        dashboard.button("u", "🔄 Update plugins", ":Lazy sync <CR>"),
+        dashboard.button("c", "⚙️ Configuration", ":e ~/.config/nvim/init.lua <CR>"),
+        dashboard.button("h", "🏥 Health check", ":checkhealth <CR>"),
+        dashboard.button("q", "👋 Quit", ":qa <CR>"),
+      }
+      
+      -- Footer with stats
+      local function footer()
+        local total_plugins = #require("lazy").plugins()
+        local datetime = os.date(" %d-%m-%Y   %H:%M:%S")
+        local version = vim.version()
+        local nvim_version_info = "   v" .. version.major .. "." .. version.minor .. "." .. version.patch
+        
+        return {
+          "⚡ " .. total_plugins .. " plugins loaded in beast mode",
+          "🚀 Neovim" .. nvim_version_info .. "  " .. datetime,
+          "",
+          "💡 Press <leader>bb to send code to ByteBot",
+          "🎨 Press <leader>th to cycle themes",
+          "📊 Press <leader>Lp for performance profile",
+        }
+      end
+      
+      dashboard.section.footer.val = footer()
+      dashboard.section.footer.opts.hl = "Type"
+      dashboard.section.header.opts.hl = "Include"
+      dashboard.section.buttons.opts.hl = "Keyword"
+      
+      dashboard.opts.opts.noautocmd = true
+      alpha.setup(dashboard.opts)
+      
+      -- Auto-open dashboard on startup
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "LazyVimStarted",
+        callback = function()
+          local stats = require("lazy").stats()
+          local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
+          dashboard.section.footer.val = {
+            "⚡ " .. stats.count .. " plugins loaded in " .. ms .. "ms",
+            "🎯 Beast mode target: <150ms startup",
+            "",
+            footer()[4], footer()[5], footer()[6]
+          }
+          pcall(vim.cmd.AlphaRedraw)
+        end,
+      })
+    end,
+  },
+
+  -- 🌊 Smooth Cursor - Enhanced cursor animations
+  {
+    "gen740/SmoothCursor.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("smoothcursor").setup({
+        type = "default",
+        cursor = "",
+        texthl = "SmoothCursor",
+        linehl = nil,
+        fancy = {
+          enable = true,
+          head = { cursor = "▷", texthl = "SmoothCursor", linehl = nil },
+          body = {
+            { cursor = "󰝥", texthl = "SmoothCursorRed" },
+            { cursor = "󰝥", texthl = "SmoothCursorOrange" },
+            { cursor = "●", texthl = "SmoothCursorYellow" },
+            { cursor = "●", texthl = "SmoothCursorGreen" },
+            { cursor = "•", texthl = "SmoothCursorAqua" },
+            { cursor = ".", texthl = "SmoothCursorBlue" },
+            { cursor = ".", texthl = "SmoothCursorPurple" },
+          },
+          tail = { cursor = nil, texthl = "SmoothCursor" },
+        },
+        matrix = {
+          head = {
+            cursor = require("smoothcursor.matrix_chars")[math.random(#require("smoothcursor.matrix_chars"))],
+            texthl = "SmoothCursor",
+            linehl = nil,
+          },
+          body = {
+            length = 6,
+            cursor = require("smoothcursor.matrix_chars")[math.random(#require("smoothcursor.matrix_chars"))],
+            texthl = "SmoothCursorGreen",
+          },
+          tail = {
+            cursor = nil,
+            texthl = "SmoothCursor",
+          },
+          unstop = false,
+        },
+        autostart = true,
+        always_redraw = true,
+        flyin_effect = nil,
+        speed = 25,
+        intervals = 35,
+        priority = 10,
+        timeout = 3000,
+        threshold = 3,
+        disable_float_win = false,
+        enabled_filetypes = nil,
+        disabled_filetypes = { "alpha", "TelescopePrompt", "lazy" },
+      })
+    end,
+  },
   -- 🌈 Four Beautiful Themes (cycle with <leader>th)
   {
     "folke/tokyonight.nvim",

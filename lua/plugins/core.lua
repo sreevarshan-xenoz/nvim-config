@@ -1,5 +1,5 @@
--- 🏗️ Core Foundation - Essential plugins that everything depends on
--- Plenary, Treesitter, Which-key for the base experience
+-- 🏗️ Beast Mode Core Foundation - Hyper-optimized essentials
+-- Plenary, Treesitter, Which-key, Snapshot for <150ms startup
 
 return {
   -- 📚 Essential Lua library (required by many plugins)
@@ -7,6 +7,31 @@ return {
     "nvim-lua/plenary.nvim",
     lazy = false,
     priority = 1000,
+  },
+
+  -- 📸 Snapshot.nvim - Session snapshots for instant restoration
+  {
+    "rmagatti/session-lens",
+    dependencies = { "rmagatti/auto-session", "nvim-telescope/telescope.nvim" },
+    config = function()
+      require("auto-session").setup({
+        log_level = "error",
+        auto_session_suppress_dirs = { "~/", "~/Projects", "~/Downloads", "/" },
+        auto_session_use_git_branch = true,
+        auto_session_enable_last_session = true,
+        auto_restore_enabled = false,
+        auto_save_enabled = true,
+        session_lens = {
+          buftypes_to_ignore = {},
+          load_on_setup = true,
+          theme_conf = { border = true },
+          previewer = false,
+        },
+      })
+      require("session-lens").setup({})
+      
+      vim.keymap.set("n", "<leader>ss", require("session-lens").search_session, { desc = "Search sessions" })
+    end,
   },
 
   -- 🌳 Treesitter - Modern syntax highlighting & code understanding

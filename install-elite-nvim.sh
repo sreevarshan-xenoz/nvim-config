@@ -105,11 +105,21 @@ check_requirements() {
     log_success "System requirements check passed"
 }
 
-log_header "Elite Neovim 0.11.4 Setup - Production Ready Configuration"
+log_header "Elite Neovim 0.11.4+ Beast Mode Setup - <150ms Startup Target"
 
-# 🔍 Detect operating system
+# 🔍 Detect operating system and environment
 detect_os
 log_info "Detected OS: $DISTRO ($OS)"
+
+# Check for Hyprland (for theme sync)
+if [ -n "$HYPRLAND_INSTANCE_SIGNATURE" ]; then
+    log_info "Hyprland detected - theme sync will be enabled"
+fi
+
+# Check for Neovide (GPU acceleration)
+if command -v neovide &> /dev/null; then
+    log_info "Neovide detected - GPU acceleration available"
+fi
 
 # 🔧 Check requirements
 check_requirements
@@ -309,13 +319,14 @@ install_node_packages() {
         exit 1
     fi
     
-    # Install global packages
+    # Install global packages (beast mode enhanced)
     npm install -g \
         neovim typescript typescript-language-server \
         prettier eslint @typescript-eslint/parser \
         @typescript-eslint/eslint-plugin vscode-langservers-extracted \
         yaml-language-server dockerfile-language-server-nodejs \
-        bash-language-server vim-language-server
+        bash-language-server vim-language-server \
+        live-server browser-sync nodemon
     
     log_success "Node.js packages installed successfully"
 }

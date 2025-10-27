@@ -1,7 +1,23 @@
--- 🛠️ Utilities - specter, bqf, todo-comments for enhanced productivity
--- <leader>S (search/replace), TODO highlighting, better quickfix
+-- 🛠️ Beast Mode Utilities - Enhanced productivity with nerd fonts
+-- <leader>S (search/replace), TODO highlighting, better quickfix, icon management
 
 return {
+  -- 🎨 Nerd Font Manager - Icon font management and fallbacks
+  {
+    "2kabhishek/nerdy.nvim",
+    dependencies = { "stevearc/dressing.nvim", "nvim-telescope/telescope.nvim" },
+    cmd = "Nerdy",
+    config = function()
+      require("nerdy").setup({
+        -- Check if nerd fonts are available
+        auto_check = true,
+        -- Fallback to ASCII if nerd fonts not available
+        fallback = true,
+      })
+      
+      vim.keymap.set("n", "<leader>ni", ":Nerdy<CR>", { desc = "Browse nerd font icons" })
+    end,
+  },
   -- 🔍 Advanced search and replace
   {
     "nvim-pack/nvim-spectre",
