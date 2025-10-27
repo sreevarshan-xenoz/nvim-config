@@ -48,12 +48,12 @@ local plugin_modules = {
   'plugins.motions',      -- Enhanced navigation
   'plugins.project',      -- Project & session management
   'plugins.languages',    -- Language-specific tools
-  -- 🚀 FUTURISTIC UPGRADES
-  'plugins.advanced-ai',     -- Next-gen AI & ML
-  'plugins.futuristic-ui',   -- Holographic UI & animations
-  'plugins.advanced-dev',    -- Cutting-edge dev tools
-  'plugins.collaborative',   -- Real-time collaboration
-  'plugins.performance',     -- Performance monitoring
+  -- 🚀 STREAMLINED UPGRADES (heavy plugins disabled)
+  'plugins.advanced-ai',     -- Minimal AI tools
+  'plugins.futuristic-ui',   -- UI enhancements (minimap disabled)
+  'plugins.advanced-dev',    -- Essential dev tools only
+  'plugins.collaborative',   -- REST client only
+  'plugins.performance',     -- Basic performance monitoring
 }
 
 for _, module in ipairs(plugin_modules) do

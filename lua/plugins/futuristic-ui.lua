@@ -172,10 +172,11 @@ return {
     end,
   },
 
-  -- Minimap for code overview
+  -- Minimap for code overview (disabled - heavy dependency)
   {
     "wfxr/minimap.vim",
     build = "cargo install --locked code-minimap",
+    enabled = false, -- Disabled due to heavy Rust dependency
     config = function()
       vim.g.minimap_width = 10
       vim.g.minimap_auto_start = 1

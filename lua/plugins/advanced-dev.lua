@@ -70,51 +70,7 @@ return {
     end,
   },
 
-  -- Performance profiling and optimization
-  {
-    "t-troebst/perfanno.nvim",
-    config = function()
-      local perfanno = require("perfanno")
-      local util = require("perfanno.util")
-      
-      perfanno.setup({
-        line_highlights = util.make_bg_highlights(util.red, "#CC3300", 10),
-        vt_highlight = util.make_fg_highlight("#CC3300"),
-      })
-    end,
-    keys = {
-      { "<leader>plf", function() require("perfanno").load_flamegraph() end, desc = "Load Flamegraph" },
-      { "<leader>plt", function() require("perfanno").toggle_annotations() end, desc = "Toggle Annotations" },
-      { "<leader>pho", function() require("perfanno").toggle_heat() end, desc = "Toggle Heat" },
-    },
-  },
-
-  -- Advanced code complexity analysis
-  {
-    "m-demare/hlargs.nvim",
-    config = function()
-      require('hlargs').setup({
-        color = '#ef9062',
-        highlight = {},
-        excluded_filetypes = {},
-        disable = function(_, bufnr)
-          if vim.b.semantic_tokens then
-            return true
-          end
-          local clients = vim.lsp.get_active_clients { bufnr = bufnr }
-          for _, c in pairs(clients) do
-            local caps = c.server_capabilities
-            if c.name ~= "null-ls" and caps.semanticTokensProvider and caps.semanticTokensProvider.full then
-              vim.b.semantic_tokens = true
-              return vim.b.semantic_tokens
-            end
-          end
-        end,
-      })
-    end,
-  },
-
-  -- Advanced code structure visualization
+  -- Symbols outline (simpler alternative to complex analysis tools)
   {
     "simrat39/symbols-outline.nvim",
     config = function()
@@ -150,36 +106,6 @@ return {
         },
         lsp_blacklist = {},
         symbol_blacklist = {},
-        symbols = {
-          File = { icon = "", hl = "@text.uri" },
-          Module = { icon = "", hl = "@namespace" },
-          Namespace = { icon = "", hl = "@namespace" },
-          Package = { icon = "", hl = "@namespace" },
-          Class = { icon = "𝓒", hl = "@type" },
-          Method = { icon = "ƒ", hl = "@method" },
-          Property = { icon = "", hl = "@method" },
-          Field = { icon = "", hl = "@field" },
-          Constructor = { icon = "", hl = "@constructor" },
-          Enum = { icon = "ℰ", hl = "@type" },
-          Interface = { icon = "ﰮ", hl = "@type" },
-          Function = { icon = "", hl = "@function" },
-          Variable = { icon = "", hl = "@constant" },
-          Constant = { icon = "", hl = "@constant" },
-          String = { icon = "𝓐", hl = "@string" },
-          Number = { icon = "#", hl = "@number" },
-          Boolean = { icon = "⊨", hl = "@boolean" },
-          Array = { icon = "", hl = "@constant" },
-          Object = { icon = "⦿", hl = "@type" },
-          Key = { icon = "🔐", hl = "@type" },
-          Null = { icon = "NULL", hl = "@type" },
-          EnumMember = { icon = "", hl = "@field" },
-          Struct = { icon = "𝓢", hl = "@type" },
-          Event = { icon = "🗲", hl = "@type" },
-          Operator = { icon = "+", hl = "@operator" },
-          TypeParameter = { icon = "𝙏", hl = "@parameter" },
-          Component = { icon = "", hl = "@function" },
-          Fragment = { icon = "", hl = "@constant" },
-        },
       })
     end,
     keys = {
@@ -245,10 +171,11 @@ return {
     },
   },
 
-  -- Advanced code execution and REPL
+  -- Code execution (disabled - complex build process)
   {
     "michaelb/sniprun",
     build = "sh install.sh",
+    enabled = false, -- Disabled due to complex build requirements
     config = function()
       require("sniprun").setup({
         selected_interpreters = {},

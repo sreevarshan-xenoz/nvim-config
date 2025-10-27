@@ -53,21 +53,8 @@ return {
       })
     end,
   },
-  {
-    "ggandor/leap.nvim",
-    event = "VeryLazy",
-    config = function()
-      require("leap").add_default_mappings()
-    end,
-  },
-  {
-    "echasnovski/mini.nvim",
-    event = "VeryLazy",
-    config = function()
-      require("mini.align").setup()
-      require("mini.surround").setup()
-    end,
-  },
+  -- Leap removed - redundant with Flash.nvim
+  -- Mini.surround removed - redundant with nvim-surround
   { "nvim-pack/nvim-spectre", lazy = true },  -- Search/replace
   -- Test: gcc for comment; ys for surround; s for leap
 }
