@@ -2,9 +2,16 @@
 # 🛠️ Installation Utilities - Reusable functions for modular installer
 # Common utilities, logging, and helper functions
 
-# Source configuration
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/install-config.sh"
+# Source configuration if not already loaded
+if [[ -z "$CONFIG_LOADED" ]]; then
+    UTILS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    if [[ -f "$UTILS_DIR/install-config.sh" ]]; then
+        source "$UTILS_DIR/install-config.sh"
+    else
+        echo "❌ Configuration file not found at $UTILS_DIR/install-config.sh"
+        exit 1
+    fi
+fi
 
 # 🎨 Colors for output
 RED='\033[0;31m'

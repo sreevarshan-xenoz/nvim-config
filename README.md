@@ -188,6 +188,70 @@ neovide --geometry=1920x1080 --maximized
 - High DPI support for crisp text rendering
 - Ligature support for programming fonts
 
+## 🔧 Modular Architecture
+
+The Elite Neovim configuration features a completely modular architecture inspired by modern package managers and LunarVim's design philosophy:
+
+### 📁 Directory Structure
+```
+~/.config/nvim-elite/
+├── install-elite-nvim-modular.sh    # Main modular installer
+├── scripts/
+│   ├── install-config.sh            # Centralized configuration
+│   ├── install-utils.sh             # Reusable utilities
+│   ├── install-system.sh            # OS-specific packages
+│   └── install-languages.sh         # Language environments
+├── lua/
+│   ├── configs/                     # Core configuration
+│   ├── plugins/                     # Plugin specifications
+│   └── lvim/                        # LunarVim-inspired modules
+└── README.md
+```
+
+### 🎯 Module System
+
+Each module can be independently enabled/disabled:
+
+| Module | Description | Key Plugins |
+|--------|-------------|-------------|
+| **core** | Essential foundation | plenary, treesitter, which-key |
+| **ui** | Themes and interface | 4 themes, lualine, notify, alpha |
+| **navigation** | Movement and search | Flash, Telescope, Oil, Harpoon |
+| **lsp** | Language servers | Mason, lspconfig, cmp, trouble |
+| **ai** | AI integration | Copilot, ChatGPT, ByteBot |
+| **debug** | Debugging & testing | nvim-dap, neotest, coverage |
+| **git** | Git workflow | Neogit, gitsigns, diffview |
+| **editing** | Text manipulation | Comment, surround, mini.ai |
+| **project** | Project management | project.nvim, persistence |
+| **languages** | Language-specific | Rust, Python, Web, Markdown |
+
+### 🛠️ Configuration Management
+
+```bash
+# View current module status
+./install-elite-nvim-modular.sh --list-modules
+
+# Enable/disable specific modules
+./install-elite-nvim-modular.sh --enable-module ai --disable-module debug
+
+# Use predefined configurations
+export INSTALL_AI=false              # Disable AI globally
+export INSTALL_DEBUG=false           # Disable debugging tools
+export STARTUP_TARGET_MS=100         # Custom startup target
+
+# Custom configuration file
+./install-elite-nvim-modular.sh --config my-config.sh
+```
+
+### ⚡ Performance Optimization
+
+The modular system ensures optimal performance:
+
+- **Lazy Loading**: Plugins load only when needed
+- **Conditional Loading**: Features activate based on file types
+- **Startup Profiling**: Built-in performance monitoring
+- **Module Dependencies**: Smart dependency resolution
+
 ## 🌙 LunarVim Mode
 
 Experience the power of LunarVim's IDE polish with hyper-modular architecture and <100ms startup:
