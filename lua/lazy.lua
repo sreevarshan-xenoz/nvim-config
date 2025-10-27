@@ -1,0 +1,2 @@
+-- Neovim lazy.lua: Legacy file, bootstrap moved to init.lua
+-- This file is no longer used, but kept for reference
