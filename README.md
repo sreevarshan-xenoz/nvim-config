@@ -103,48 +103,199 @@
 
 ## 🚀 Installation
 
-### Prerequisites (Arch Linux)
+### 🎯 One-Line Installation (Recommended)
 ```bash
-# Install system dependencies
-sudo pacman -S git nodejs npm ripgrep fd gcc make python python-pip clang rustup go unzip curl wget tree-sitter luarocks
-
-# Python packages
-pip install --user pynvim debugpy black flake8 mypy
-
-# Rust setup
-rustup default stable
-rustup component add rust-analyzer
-
-# Node.js packages
-sudo npm install -g neovim typescript typescript-language-server prettier eslint
+curl -fsSL https://raw.githubusercontent.com/your-username/elite-neovim-config/main/quick-install.sh | bash
 ```
 
-### Automated Installation
-```bash
-# Clone this repository
-git clone <repository-url> ~/.config/nvim-elite
-cd ~/.config/nvim-elite
+### 📋 Step-by-Step Installation
 
-# Run the installation script
+#### 1. Check System Requirements
+```bash
+# Download and run system checker
+curl -fsSL https://raw.githubusercontent.com/your-username/elite-neovim-config/main/check-system.sh | bash
+```
+
+#### 2. Clone Repository
+```bash
+git clone https://github.com/your-username/elite-neovim-config.git ~/.config/nvim-elite
+cd ~/.config/nvim-elite
+```
+
+#### 3. Run Installation Script
+```bash
+# Make script executable
+chmod +x install-elite-nvim.sh
+
+# Run full installation (supports multiple OS)
 ./install-elite-nvim.sh
 ```
 
-### Manual Installation
+### 🖥️ Supported Operating Systems
+
+| OS | Status | Package Manager | Notes |
+|---|---|---|---|
+| **Arch Linux** | ✅ Full Support | `pacman` | Primary development platform |
+| **Ubuntu/Debian** | ✅ Full Support | `apt` | Uses PPA for latest Neovim |
+| **macOS** | ✅ Full Support | `brew` | Requires Homebrew |
+| **Fedora/RHEL** | ✅ Full Support | `dnf/yum` | GitHub releases for some tools |
+| **openSUSE** | ✅ Full Support | `zypper` | Community tested |
+| **Windows** | ⚠️ WSL2 Only | `apt` | Use Ubuntu on WSL2 |
+
+### 📦 System Requirements
+
+#### Essential (Auto-installed)
+- **Git** - Version control
+- **Node.js 16+** - JavaScript runtime
+- **Python 3.8+** - Python runtime
+- **GCC/Clang** - C/C++ compiler
+- **Make** - Build tool
+- **ripgrep** - Fast text search
+- **fd** - Fast file finder
+- **curl/wget** - Download tools
+
+#### Optional (Enhances experience)
+- **Rust** - For Rust development
+- **Go** - For Go development
+- **Docker** - For containerized development
+- **tree-sitter CLI** - Enhanced syntax highlighting
+- **LuaRocks** - Lua package manager
+
+### 🔧 Manual Installation (Advanced Users)
+
+If you prefer manual control:
+
 ```bash
-# Backup existing config
+# 1. Install system dependencies (example for Ubuntu)
+sudo apt update
+sudo apt install git nodejs npm python3 python3-pip gcc make unzip ripgrep fd-find
+
+# 2. Install Python packages
+pip3 install --user pynvim debugpy black flake8 mypy
+
+# 3. Install Node.js packages
+sudo npm install -g neovim typescript typescript-language-server prettier eslint
+
+# 4. Install Rust (optional)
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+source ~/.cargo/env
+rustup component add rust-analyzer
+
+# 5. Backup existing Neovim config
 mv ~/.config/nvim ~/.config/nvim.backup.$(date +%Y%m%d_%H%M%S)
 
-# Copy configuration
-cp -r . ~/.config/nvim/
+# 6. Clone and setup configuration
+git clone https://github.com/your-username/elite-neovim-config.git ~/.config/nvim
+cd ~/.config/nvim
 
-# Start Neovim and install plugins
+# 7. Start Neovim and install plugins
 nvim +Lazy sync +qa
 
-# Install language servers
+# 8. Install language servers
 nvim +MasonInstall lua-language-server pyright typescript-language-server rust-analyzer clangd +qa
 
-# Install Treesitter parsers
+# 9. Install Treesitter parsers
 nvim +TSInstall lua vim python javascript typescript rust cpp c go html css json yaml markdown bash +qa
+```
+
+### � ️ Installation Scripts
+
+| Script | Purpose | Usage |
+|---|---|---|
+| `quick-install.sh` | One-line installation | `curl -fsSL <url> \| bash` |
+| `install-elite-nvim.sh` | Full installation with OS detection | `./install-elite-nvim.sh` |
+| `check-system.sh` | System requirements checker | `./check-system.sh` |
+| `verify-install.sh` | Post-installation verification | `./verify-install.sh` |
+| `uninstall.sh` | Complete removal with cleanup | `./uninstall.sh` |
+
+### ✅ Post-Installation Verification
+
+After installation, verify everything is working:
+
+```bash
+# Run verification script
+./verify-install.sh
+
+# Or manually check key components
+nvim +checkhealth
+nvim +Lazy
+nvim +Mason
+```
+
+### 🚨 Troubleshooting Installation
+
+#### Common Issues
+
+**Permission Denied**
+```bash
+chmod +x *.sh
+```
+
+**System Requirements Not Met**
+```bash
+# Check what's missing
+./check-system.sh
+
+# Install missing packages based on your OS
+```
+
+**Plugin Installation Fails**
+```bash
+# Manually sync plugins in Neovim
+nvim
+:Lazy sync
+
+# Or reinstall completely
+rm -rf ~/.local/share/nvim
+nvim +Lazy sync
+```
+
+**Language Server Issues**
+```bash
+# Check Mason status
+nvim
+:Mason
+# Install servers manually from Mason UI
+
+# Or reinstall Mason packages
+rm -rf ~/.local/share/nvim/mason
+nvim +MasonInstallAll
+```
+
+**Slow Startup**
+```bash
+# Profile startup time
+nvim --startuptime startup.log
+cat startup.log
+
+# Or use Lazy profiler
+nvim
+:Lazy profile
+```
+
+**Configuration Errors**
+```bash
+# Check for syntax errors
+nvim --headless -c "lua print('Config OK')" +qa
+
+# Reset to clean state
+./uninstall.sh
+./install-elite-nvim.sh
+```
+
+### 🗑️ Uninstallation
+
+To completely remove Elite Neovim:
+
+```bash
+# Run uninstaller (interactive)
+./uninstall.sh
+
+# Or manual removal
+rm -rf ~/.config/nvim
+rm -rf ~/.local/share/nvim
+rm -rf ~/.local/state/nvim
+rm -rf ~/.cache/nvim
 ```
 
 ## ⌨️ Key Bindings
