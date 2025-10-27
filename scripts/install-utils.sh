@@ -399,7 +399,7 @@ measure_startup_time() {
 
 # 🎯 Initialize utilities
 setup_logging
-trap cleanup_on_exit EXIT
+# Note: EXIT trap should be set up by the main installer, not here
 
 # Export all utility functions
 export -f log_debug log_info log_success log_warning log_error log_header

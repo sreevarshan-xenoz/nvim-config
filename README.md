@@ -383,10 +383,10 @@ cd ~/.config/nvim-elite
 #### 3. Run Installation Script
 ```bash
 # Make script executable
-chmod +x install-elite-nvim.sh
+chmod +x install-elite-nvim-modular.sh
 
-# Run full installation (supports multiple OS)
-./install-elite-nvim.sh
+# Run modular installation (supports multiple OS)
+./install-elite-nvim-modular.sh
 ```
 
 ### 🖥️ Supported Operating Systems
@@ -461,7 +461,7 @@ nvim +TSInstall lua vim python javascript typescript rust cpp c go html css json
 | Script | Purpose | Usage |
 |---|---|---|
 | `quick-install.sh` | One-line installation | `curl -fsSL <url> \| bash` |
-| `install-elite-nvim.sh` | Full installation with OS detection | `./install-elite-nvim.sh` |
+| `install-elite-nvim-modular.sh` | Modular installation with options | `./install-elite-nvim-modular.sh` |
 | `check-system.sh` | System requirements checker | `./check-system.sh` |
 | `verify-install.sh` | Post-installation verification | `./verify-install.sh` |
 | `uninstall.sh` | Complete removal with cleanup | `./uninstall.sh` |
@@ -538,7 +538,7 @@ nvim --headless -c "lua print('Config OK')" +qa
 
 # Reset to clean state
 ./uninstall.sh
-./install-elite-nvim.sh
+./install-elite-nvim-modular.sh
 ```
 
 ### 🗑️ Uninstallation
@@ -684,7 +684,7 @@ echo 'export OPENAI_API_KEY="your-api-key-here"' >> ~/.bashrc
 │       ├── markdown.lua     # Markdown support
 │       ├── data.lua         # Data formats
 │       └── tex.lua          # LaTeX support
-└── install-elite-nvim.sh    # Installation script
+└── install-elite-nvim-modular.sh    # Modular installation script
 ```
 
 ## 🏥 Troubleshooting

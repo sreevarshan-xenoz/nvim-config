@@ -18,13 +18,16 @@ help:
 	@echo "  make beast      - Full beast mode optimization"
 	@echo "  make bytebot    - Test ByteBot integration"
 	@echo "  make lunar      - LunarVim mode setup and health check"
-	@echo "  make help       - Show this help"
+	@echo "  make help       - Show this help
+	@echo "  make minimal    - Minimal installation"
+	@echo "  make full       - Full installation"
+	@echo "  make modules    - List available modules""
 
 # Install Elite Neovim
 install:
-	@echo "🚀 Starting Elite Neovim installation..."
-	@chmod +x install-elite-nvim.sh
-	@./install-elite-nvim.sh
+	@echo "🚀 Starting Elite Neovim modular installation..."
+	@chmod +x install-elite-nvim-modular.sh
+	@./install-elite-nvim-modular.sh
 
 # Check system requirements
 check:
@@ -161,4 +164,25 @@ lunar:
 lunar-ai:
 	@echo "🤖 Checking LunarVim AI integrations..."
 	@nvim --headless -c "lua require('lvim.ai').check_ai_status()" +qa
-	@echo "✅ AI status check complete"
+	@echo "✅ AI status check complete"# Mod
+ular installation targets
+minimal:
+	@echo "⚡ Starting minimal installation..."
+	@chmod +x install-elite-nvim-modular.sh
+	@./install-elite-nvim-modular.sh --minimal
+
+full:
+	@echo "🚀 Starting full installation..."
+	@chmod +x install-elite-nvim-modular.sh
+	@./install-elite-nvim-modular.sh --full
+
+modules:
+	@echo "📦 Available modules:"
+	@chmod +x install-elite-nvim-modular.sh
+	@./install-elite-nvim-modular.sh --list-modules
+
+# Test modular system
+test-modular:
+	@echo "🧪 Testing modular system..."
+	@chmod +x test-modular.sh
+	@./test-modular.sh

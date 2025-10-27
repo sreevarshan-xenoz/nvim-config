@@ -606,6 +606,9 @@ show_completion_summary() {
 
 # 🚀 Main execution flow
 main() {
+    # Set up cleanup trap
+    trap cleanup_on_exit EXIT
+    
     # Parse command line arguments
     parse_arguments "$@"
     
